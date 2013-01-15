@@ -2,7 +2,6 @@
 # January 14, 2013
 
 class Chain
-  attr_accessor :start_word, :end_word, :dictionary, :possible_words
 
   def initialize(start_word, end_word)
     @start_word = start_word
@@ -104,7 +103,7 @@ end
 
 #Scripts------------------------------------------------------------------------
 
-#game = Chain.new("duck", "ruby")
-game = Chain.new("happy", "crazy")
+game = Chain.new("duck", "ruby")
+#game = Chain.new("happy", "crazy")
 #game = Chain.new("orange", "purple")
 game.wordchains
