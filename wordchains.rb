@@ -1,3 +1,6 @@
+# Vincent Chang & Jason Wong
+# January 14, 2013
+
 class Chain
   attr_accessor :start_word, :end_word, :dictionary, :possible_words
 
@@ -45,17 +48,63 @@ class Chain
     load_dictionary
     initialize_possible_words
 
-    a = adjacent_words("duck")
-    remove_adjacent_words(a)
+    path = find_path
 
-    adjacent_words
+    print_path(path)
+
+  end
+
+  def find_path
+
+    all_adjacent_words = {@start_word => nil}
+    new_words = [@start_word]
+    new_adjacent_words = []
+
+    until all_adjacent_words.has_key?(@end_word) || new_words.empty?    #if new_words is empty that means there is no path between start_word and end_word
+      parent_words = new_words.dup
+
+      parent_words.each do |parent_word|
+        child_words = adjacent_words(parent_word)
+        remove_adjacent_words(child_words)
+
+        child_words.each do |child_word|
+          all_adjacent_words[child_word] = parent_word
+        end
+
+        new_words += child_words
+      end
+
+      new_words -= parent_words
+    end
+
+    if new_words.empty?
+      path = []
+    else
+      parent = all_adjacent_words[@end_word]
+      path = [@end_word]
+
+      until parent.nil?
+        path << parent
+        parent = all_adjacent_words[parent]
+      end
+    end
+
+    path
+  end
+
+  def print_path(path)
+    if path.empty?
+      puts "Sorry, there is no path from #{@start_word} to #{@end_word}"
+    else
+      p path.reverse.join(", ")
+    end
   end
 
 end
 
+#Scripts------------------------------------------------------------------------
 
-
-
-
-game = Chain.new("duck", "ruby")
+#game = Chain.new("duck", "ruby")
+game = Chain.new("happy", "crazy")
+#game = Chain.new("orange", "purple")
 game.wordchains
